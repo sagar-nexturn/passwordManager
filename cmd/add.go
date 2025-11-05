@@ -26,7 +26,6 @@ func NewAddCmd(repo repository.PasswordDbRepo) *cobra.Command {
 				return fmt.Errorf("site and secret are required")
 			}
 
-			// Encrypt password before saving
 			ct, nonce, err := crypto.Encrypt([]byte(flagSecret))
 			if err != nil {
 				return err
@@ -42,11 +41,12 @@ func NewAddCmd(repo repository.PasswordDbRepo) *cobra.Command {
 				UpdatedAt: time.Now(),
 			}
 
-			if err := repo.AddPassword(entry); err != nil {
+			err = repo.AddPassword(entry)
+			if err != nil {
 				return fmt.Errorf("failed to add password: %v", err)
 			}
 
-			fmt.Println("✅ Added entry with ID:", entry.ID)
+			fmt.Println("Added entry with ID:", entry.ID)
 			return nil
 		},
 	}

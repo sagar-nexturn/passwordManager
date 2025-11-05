@@ -10,7 +10,6 @@ import (
 	"os"
 )
 
-// getKey reads MASTER_KEY env var (base64 encoded). Must be 32 bytes after decode.
 func getKey() ([]byte, error) {
 	b := os.Getenv("MASTER_KEY")
 	if b == "" {
@@ -26,7 +25,6 @@ func getKey() ([]byte, error) {
 	return k, nil
 }
 
-// Encrypt returns ciphertext and nonce
 func Encrypt(plaintext []byte) (ciphertext []byte, nonce []byte, err error) {
 	key, err := getKey()
 	if err != nil {
@@ -48,7 +46,6 @@ func Encrypt(plaintext []byte) (ciphertext []byte, nonce []byte, err error) {
 	return ciphertext, nonce, nil
 }
 
-// Decrypt accepts ciphertext and nonce
 func Decrypt(ciphertext []byte, nonce []byte) ([]byte, error) {
 	key, err := getKey()
 	if err != nil {

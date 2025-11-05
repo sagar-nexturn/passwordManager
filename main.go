@@ -16,6 +16,20 @@ func main() {
 	db := config.InitDB()
 	log.Println("Connected to database on render successfully!!!")
 
+	//Creating tables and inserting sample data
+	//PostgresInit := repository.NewPostgresInitRepo(db)
+	//err := PostgresInit.CreatePasswordsTableIfNotExist()
+	//if err != nil {
+	//	log.Fatalf("Error creating passwords table: %v", err)
+	//}
+	//log.Println("Table 'passwords' ensured in database.")
+
+	//err = PostgresInit.InsertSampleData()
+	//if err != nil {
+	//	log.Fatalf("Error inserting sample data: %v", err)
+	//}
+	//log.Println("Sample data ensured in database.")
+
 	// Initialize Repository
 	passwordRepo := repository.NewPostgresPasswordRepo(db)
 

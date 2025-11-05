@@ -137,7 +137,7 @@ func (m *PostgresPasswordRepo) DeletePassword(id string) error {
 
 func (m *PostgresPasswordRepo) AddPassword(password *models.Password) error {
 	query := `
-		INSERT INTO passwords (id, name, username, secret, nonce, createdAt, updatedAt)
+		INSERT INTO passwords (id, name, username, secret, nonce, created_at, updated_at)
 		VALUES ($1,$2,$3,$4,$5,$6,$7)
 		`
 	_, err := m.db.Exec(query, password.ID, password.Name, password.Username, password.Secret, password.Nonce, password.CreatedAt, password.UpdatedAt)

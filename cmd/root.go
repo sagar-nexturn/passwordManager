@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/sagar-nexturn/passwordManager/internal/repository"
@@ -19,6 +20,7 @@ func NewRootCmd(repo repository.PasswordDbRepo) *cobra.Command {
 	}
 
 	rootCmd.AddCommand(NewAddCmd(repo))
+	rootCmd.AddCommand(NewGetCmd(repo))
 
 	return rootCmd
 }
@@ -26,7 +28,7 @@ func NewRootCmd(repo repository.PasswordDbRepo) *cobra.Command {
 func Execute(rootCmd *cobra.Command) {
 	err := rootCmd.Execute()
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		os.Exit(1)
 	}
 }
