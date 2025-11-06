@@ -21,6 +21,8 @@ func NewRootCmd(repo repository.PasswordDbRepo) *cobra.Command {
 
 	rootCmd.AddCommand(NewAddCmd(repo))
 	rootCmd.AddCommand(NewGetCmd(repo))
+	rootCmd.AddCommand(NewDeleteCmd(repo))
+	rootCmd.AddCommand(NewUpdateCmd(repo))
 
 	return rootCmd
 }

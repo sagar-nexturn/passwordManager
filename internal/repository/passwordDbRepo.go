@@ -10,5 +10,6 @@ type PasswordDbRepo interface {
 	GetAllPasswords() ([]models.Password, error)
 	GetPasswordByName(name string) (*models.Password, error)
 	UpdatePassword(password *models.Password) error
-	DeletePassword(id string) error
+	DeletePasswordById(id string) error
+	DeletePasswordByName(name string) error
 }

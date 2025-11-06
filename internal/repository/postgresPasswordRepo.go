@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-	"time"
 
 	"github.com/sagar-nexturn/passwordManager/internal/models"
 )
@@ -99,15 +98,13 @@ func (m *PostgresPasswordRepo) GetPasswordByName(name string) (*models.Password,
 }
 
 func (m *PostgresPasswordRepo) UpdatePassword(password *models.Password) error {
-	password.UpdatedAt = time.Now()
-
 	query := `
 	UPDATE passwords 
-	SET name=$1, username=$2, secret=$3, nonce=$4, updated_at=$5 
-	WHERE id=$6
+	SET secret=$1, nonce=$2, updated_at=$3 
+	WHERE name=$4
 	`
 
-	res, err := m.db.Exec(query, password.Name, password.Username, password.Secret, password.Nonce, password.UpdatedAt, password.ID)
+	res, err := m.db.Exec(query, password.Secret, password.Nonce, password.UpdatedAt, password.Name)
 	if err != nil {
 		return fmt.Errorf("failed to update password: %v", err)
 	}
@@ -120,9 +117,24 @@ func (m *PostgresPasswordRepo) UpdatePassword(password *models.Password) error {
 	return nil
 }
 
-func (m *PostgresPasswordRepo) DeletePassword(id string) error {
+func (m *PostgresPasswordRepo) DeletePasswordById(id string) error {
 	query := `DELETE FROM passwords WHERE id = $1`
 	res, err := m.db.Exec(query, id)
+	if err != nil {
+		return fmt.Errorf("failed to delete password: %v", err)
+	}
+
+	count, _ := res.RowsAffected()
+	if count == 0 {
+		return fmt.Errorf("no record found to delete")
+	}
+
+	return nil
+}
+
+func (m *PostgresPasswordRepo) DeletePasswordByName(name string) error {
+	query := `DELETE FROM passwords WHERE name = $1`
+	res, err := m.db.Exec(query, name)
 	if err != nil {
 		return fmt.Errorf("failed to delete password: %v", err)
 	}
