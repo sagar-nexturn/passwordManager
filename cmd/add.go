@@ -11,7 +11,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func NewAddCmd(repo repository.PasswordDbRepo) *cobra.Command {
+func NewAddCmd(repo repository.PasswordDbRepo, cypt crypto.Crypto) *cobra.Command {
 	var (
 		flagSite     string
 		flagUsername string
@@ -26,7 +26,7 @@ func NewAddCmd(repo repository.PasswordDbRepo) *cobra.Command {
 				return fmt.Errorf("site and secret are required")
 			}
 
-			ct, nonce, err := crypto.Encrypt([]byte(flagSecret))
+			ct, nonce, err := cypt.Encrypt([]byte(flagSecret))
 			if err != nil {
 				return err
 			}

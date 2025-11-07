@@ -9,7 +9,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func NewUpdateCmd(repo repository.PasswordDbRepo) *cobra.Command {
+func NewUpdateCmd(repo repository.PasswordDbRepo, cypt crypto.Crypto) *cobra.Command {
 	var flagName string
 	var flagOldPass string
 	var flagNewPass string
@@ -34,7 +34,7 @@ func NewUpdateCmd(repo repository.PasswordDbRepo) *cobra.Command {
 			}
 
 			//Verify Password
-			storedPass, err := crypto.Decrypt(p.Secret, p.Nonce)
+			storedPass, err := cypt.Decrypt(p.Secret, p.Nonce)
 			if err != nil {
 				return err
 			}
@@ -42,7 +42,7 @@ func NewUpdateCmd(repo repository.PasswordDbRepo) *cobra.Command {
 				return fmt.Errorf("old password does not match stored password, please try again")
 			}
 
-			ct, nonce, err := crypto.Encrypt([]byte(flagNewPass))
+			ct, nonce, err := cypt.Encrypt([]byte(flagNewPass))
 			if err != nil {
 				return err
 			}

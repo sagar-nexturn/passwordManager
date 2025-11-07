@@ -5,11 +5,12 @@ import (
 	"log"
 	"os"
 
+	"github.com/sagar-nexturn/passwordManager/internal/crypto"
 	"github.com/sagar-nexturn/passwordManager/internal/repository"
 	"github.com/spf13/cobra"
 )
 
-func NewRootCmd(repo repository.PasswordDbRepo) *cobra.Command {
+func NewRootCmd(repo repository.PasswordDbRepo, cypt crypto.Crypto) *cobra.Command {
 	rootCmd := &cobra.Command{
 		Use:   "password-manager",
 		Short: "CLI password manager",
@@ -19,10 +20,10 @@ func NewRootCmd(repo repository.PasswordDbRepo) *cobra.Command {
 		},
 	}
 
-	rootCmd.AddCommand(NewAddCmd(repo))
-	rootCmd.AddCommand(NewGetCmd(repo))
+	rootCmd.AddCommand(NewAddCmd(repo, cypt))
+	rootCmd.AddCommand(NewGetCmd(repo, cypt))
 	rootCmd.AddCommand(NewDeleteCmd(repo))
-	rootCmd.AddCommand(NewUpdateCmd(repo))
+	rootCmd.AddCommand(NewUpdateCmd(repo, cypt))
 
 	return rootCmd
 }

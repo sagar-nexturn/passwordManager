@@ -9,20 +9,20 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func NewGetCmd(repo repository.PasswordDbRepo) *cobra.Command {
+func NewGetCmd(repo repository.PasswordDbRepo, cypt crypto.Crypto) *cobra.Command {
 	getCmd := &cobra.Command{
 		Use:   "get",
 		Short: "Retrieve and decrypt stored passwords",
 	}
 
-	getCmd.AddCommand(NewGetByIdCmd(repo))
-	getCmd.AddCommand(NewGetByNameCmd(repo))
-	getCmd.AddCommand(NewGetAllCmd(repo))
+	getCmd.AddCommand(NewGetByIdCmd(repo, cypt))
+	getCmd.AddCommand(NewGetByNameCmd(repo, cypt))
+	getCmd.AddCommand(NewGetAllCmd(repo, cypt))
 
 	return getCmd
 }
 
-func NewGetByIdCmd(repo repository.PasswordDbRepo) *cobra.Command {
+func NewGetByIdCmd(repo repository.PasswordDbRepo, cypt crypto.Crypto) *cobra.Command {
 	var flagId string
 
 	getByIdCmd := &cobra.Command{
@@ -38,7 +38,7 @@ func NewGetByIdCmd(repo repository.PasswordDbRepo) *cobra.Command {
 				return fmt.Errorf("failed to get password: %v", err)
 			}
 
-			pt, err := crypto.Decrypt(p.Secret, p.Nonce)
+			pt, err := cypt.Decrypt(p.Secret, p.Nonce)
 			if err != nil {
 				return err
 			}
@@ -54,7 +54,7 @@ func NewGetByIdCmd(repo repository.PasswordDbRepo) *cobra.Command {
 	return getByIdCmd
 }
 
-func NewGetByNameCmd(repo repository.PasswordDbRepo) *cobra.Command {
+func NewGetByNameCmd(repo repository.PasswordDbRepo, cypt crypto.Crypto) *cobra.Command {
 	var flagName string
 
 	getByNameCmd := &cobra.Command{
@@ -70,7 +70,7 @@ func NewGetByNameCmd(repo repository.PasswordDbRepo) *cobra.Command {
 				return fmt.Errorf("failed to get password: %v", err)
 			}
 
-			pt, err := crypto.Decrypt(p.Secret, p.Nonce)
+			pt, err := cypt.Decrypt(p.Secret, p.Nonce)
 			if err != nil {
 				return err
 			}
@@ -86,7 +86,7 @@ func NewGetByNameCmd(repo repository.PasswordDbRepo) *cobra.Command {
 	return getByNameCmd
 }
 
-func NewGetAllCmd(repo repository.PasswordDbRepo) *cobra.Command {
+func NewGetAllCmd(repo repository.PasswordDbRepo, cypt crypto.Crypto) *cobra.Command {
 	getAllCmd := &cobra.Command{
 		Use:   "all",
 		Short: "Retrieve and decrypt all stored passwords",
@@ -99,7 +99,7 @@ func NewGetAllCmd(repo repository.PasswordDbRepo) *cobra.Command {
 			passwords := make(map[string][]byte)
 
 			for _, v := range p {
-				pt, err := crypto.Decrypt(v.Secret, v.Nonce)
+				pt, err := cypt.Decrypt(v.Secret, v.Nonce)
 				if err != nil {
 					log.Printf("failed to decrypt password for name: %s, with error info: %v", v.Name, err)
 					continue

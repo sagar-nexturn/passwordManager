@@ -2,9 +2,11 @@ package main
 
 import (
 	"log"
+	"os"
 
 	"github.com/sagar-nexturn/passwordManager/cmd"
 	"github.com/sagar-nexturn/passwordManager/internal/config"
+	"github.com/sagar-nexturn/passwordManager/internal/crypto"
 	"github.com/sagar-nexturn/passwordManager/internal/repository"
 )
 
@@ -33,8 +35,18 @@ func main() {
 	// Initialize Repository
 	passwordRepo := repository.NewPostgresPasswordRepo(db)
 
-	// Build root command with repo injected
-	rootCmd := cmd.NewRootCmd(passwordRepo)
+	// Initialize and choose Crypto Logic
+	var cypt crypto.Crypto
+	if os.Getenv("USE_KMS") == "true" {
+		cypt = crypto.NewKMSCrypto()
+		log.Println("Using AWS KMS for encryption")
+	} else {
+		cypt = crypto.NewAESCrypto()
+		log.Println("Using local AES encryption")
+	}
+
+	// Build root command with repo and crypto logic injected
+	rootCmd := cmd.NewRootCmd(passwordRepo, cypt)
 
 	// Execute CLI
 	cmd.Execute(rootCmd)
