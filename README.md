@@ -26,7 +26,7 @@ go run main.go delete -h
 ---
 -help
 
-  ![Add Command](sampleRun/add help.png)   
+  ![Add Command](sampleRun/add_help.png)   
 
 -main
 
@@ -38,19 +38,19 @@ go run main.go delete -h
 ---
 -help
 
-![Get Command](sampleRun/get help.png)
+![Get Command](sampleRun/get_help.png)
 
 -by id
 
-![Get Command](sampleRun/get byId.png)
+![Get Command](sampleRun/get_byId.png)
 
 -by name
 
-![Get Command](sampleRun/get byName.png)
+![Get Command](sampleRun/get_byName.png)
 
 -all
 
-![Get Command](sampleRun/get all.png)
+![Get Command](sampleRun/get_all.png)
 
 ---
 
@@ -58,7 +58,7 @@ go run main.go delete -h
 ---
 -help
 
-![Update Command](sampleRun/update help.png)
+![Update Command](sampleRun/update_help.png)
 
 -main
 
@@ -70,15 +70,15 @@ go run main.go delete -h
 ---
 -help
 
-![Delete Command](sampleRun/delete help.png)
+![Delete Command](sampleRun/delete_help.png)
 
 -by id
 
-![Delete Command](sampleRun/delete byId.png)
+![Delete Command](sampleRun/delete_byId.png)
 
 -by name
 
-![Delete Command](sampleRun/delete byName.png)
+![Delete Command](sampleRun/delete_byName.png)
 
 ---
 
